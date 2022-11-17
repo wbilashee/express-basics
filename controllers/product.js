@@ -1,6 +1,23 @@
 const { products } = require("../data");
 
 const getAllProducts = (req, res) => {
+    const { search, limit } = req.query;
+
+    if (search && limit) {
+        const newProducts = products.filter(product => product.name.startsWith(search)).slice(0, Number(limit));
+        return res.status(200).json(newProducts);
+    }
+
+    if (search) {
+        const newProducts = products.filter(product => product.name.startsWith(search));
+        return res.status(200).json(newProducts);
+    }
+
+    if (limit) {
+        const newProducts = products.slice(0, Number(limit));
+        return res.status(200).json(newProducts);
+    }
+
     res.status(200).json(products);
 }
 
